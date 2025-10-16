@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Luxe Vlog · Home{% endblock title %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-media">
+        <div class="hero-overlay"></div>
+        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2000&q=80" alt="Luxury travel montage">
+    </div>
+    <div class="hero-copy">
+        <p class="hero-eyebrow">Premiere Release</p>
+        <h2 class="hero-title">An odyssey of light, sound, and indulgence.</h2>
+        <p class="hero-description">
+            Follow along as we capture the rare and ravishing: private islands at dusk, hidden Michelin tables, and the artisans who craft tomorrow’s legends.
+        </p>
+        <div class="hero-actions">
+            <a class="btn btn-primary" href="https://www.youtube.com" target="_blank" rel="noopener">Watch Latest Episode</a>
+            <a class="btn btn-ghost" href="#collection">View Collection</a>
+        </div>
+    </div>
+</section>
+
+<section id="collection" class="collection">
+    <header class="section-heading">
+        <p class="section-eyebrow">Featured Collection</p>
+        <h3 class="section-title">Curated evenings from the world’s grandest cities.</h3>
+    </header>
+    <div class="vlog-grid">
+        {% for vlog in vlogs %}
+        <article class="vlog-card">
+            <div class="vlog-thumbnail">
+                <img src="{{ vlog.thumbnail }}" alt="{{ vlog.title }}">
+                <span class="badge-duration">{{ vlog.duration }}</span>
+            </div>
+            <div class="vlog-body">
+                <h4 class="vlog-title">{{ vlog.title }}</h4>
+                <p class="vlog-description">{{ vlog.description }}</p>
+                <div class="vlog-actions">
+                    <a class="btn btn-secondary" href="https://www.youtube.com/results?search_query={{ vlog.title | urlencode }}" target="_blank" rel="noopener">Play Episode</a>
+                    <a class="text-link" href="#">Add to itinerary</a>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="newsletter">
+    <div class="newsletter-card">
+        <h3 class="newsletter-title">Indulge in the weekly dispatch.</h3>
+        <p class="newsletter-copy">Receive private invites, behind-the-scenes footage, and collector’s edits before anyone else.</p>
+        <form class="newsletter-form">
+            <input type="email" name="email" placeholder="Your couture inbox" required>
+            <button type="submit" class="btn btn-primary">Request Access</button>
+        </form>
+        <p class="newsletter-footnote">We respect your time. Only the essentials, delivered luxuriously.</p>
+    </div>
+</section>
+{% endblock content %}
