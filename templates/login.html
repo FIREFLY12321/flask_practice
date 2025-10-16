@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}登入 · Luxe Voyages{% endblock title %}
+
+{% block content %}
+<section class="form-section">
+    <div class="form-card">
+        <h2 class="form-title">歡迎回來</h2>
+        <p class="form-subtitle">登入以管理並分享你的奢旅文章。</p>
+        <form method="post" class="form">
+            <label class="form-label" for="email">電子郵件</label>
+            <input class="form-input" type="email" id="email" name="email" placeholder="you@example.com" required>
+
+            <label class="form-label" for="password">密碼</label>
+            <input class="form-input" type="password" id="password" name="password" placeholder="••••••" required>
+
+            <button class="btn btn-primary form-submit" type="submit">登入</button>
+        </form>
+        <p class="form-meta">還沒有帳號？<a href="{{ url_for('register') }}">前往註冊</a></p>
+    </div>
+</section>
+{% endblock content %}

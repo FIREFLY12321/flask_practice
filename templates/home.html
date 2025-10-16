@@ -1,60 +1,86 @@
 {% extends "base.html" %}
 
-{% block title %}Luxe Vlog · Home{% endblock title %}
+{% block title %}Luxe Voyages · Blog{% endblock title %}
 
 {% block content %}
 <section class="hero">
     <div class="hero-media">
         <div class="hero-overlay"></div>
-        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2000&q=80" alt="Luxury travel montage">
+        <img src="https://images.unsplash.com/photo-1517747614396-d21a78b850e8?auto=format&fit=crop&w=2000&q=80" alt="Luxury travel journal moodboard">
     </div>
     <div class="hero-copy">
-        <p class="hero-eyebrow">Premiere Release</p>
-        <h2 class="hero-title">An odyssey of light, sound, and indulgence.</h2>
+        <p class="hero-eyebrow">Luxe Journal</p>
+        <h2 class="hero-title">收錄每一篇專屬旅程的細膩篇章。</h2>
         <p class="hero-description">
-            Follow along as we capture the rare and ravishing: private islands at dusk, hidden Michelin tables, and the artisans who craft tomorrow’s legends.
+            記錄世界最珍稀的旅遊靈感：秘境旅店、私廚餐桌、與職人對談。登入即可發佈你的奢華旅行筆記，與同樣挑剔的旅伴分享靈光。
         </p>
         <div class="hero-actions">
-            <a class="btn btn-primary" href="https://www.youtube.com" target="_blank" rel="noopener">Watch Latest Episode</a>
-            <a class="btn btn-ghost" href="#collection">View Collection</a>
+            {% if current_user %}
+            <a class="btn btn-primary" href="{{ url_for('create_post') }}">撰寫新文章</a>
+            <span class="hero-greeting">歡迎回來，{{ current_user.username }}。</span>
+            {% else %}
+            <a class="btn btn-primary" href="{{ url_for('login') }}">立即登入</a>
+            <a class="btn btn-ghost" href="{{ url_for('register') }}">建立帳號</a>
+            {% endif %}
         </div>
     </div>
 </section>
 
-<section id="collection" class="collection">
+<section class="collection">
     <header class="section-heading">
-        <p class="section-eyebrow">Featured Collection</p>
-        <h3 class="section-title">Curated evenings from the world’s grandest cities.</h3>
+        <p class="section-eyebrow">Latest Stories</p>
+        <h3 class="section-title">最新發佈的奢旅誌記。</h3>
     </header>
-    <div class="vlog-grid">
-        {% for vlog in vlogs %}
-        <article class="vlog-card">
-            <div class="vlog-thumbnail">
-                <img src="{{ vlog.thumbnail }}" alt="{{ vlog.title }}">
-                <span class="badge-duration">{{ vlog.duration }}</span>
+    {% if posts %}
+    <div class="post-grid">
+        {% for post in posts %}
+        <article class="post-card">
+            <header class="post-header">
+                <h4 class="post-title">{{ post.title }}</h4>
+                <span class="post-meta">由 {{ post.username }} · {{ post.created_at|format_date }}</span>
+            </header>
+            <div class="post-body">
+                <p>
+                    {{ post.body[:220] }}{% if post.body|length > 220 %}…{% endif %}
+                </p>
             </div>
-            <div class="vlog-body">
-                <h4 class="vlog-title">{{ vlog.title }}</h4>
-                <p class="vlog-description">{{ vlog.description }}</p>
-                <div class="vlog-actions">
-                    <a class="btn btn-secondary" href="https://www.youtube.com/results?search_query={{ vlog.title | urlencode }}" target="_blank" rel="noopener">Play Episode</a>
-                    <a class="text-link" href="#">Add to itinerary</a>
+            <footer class="post-footer">
+                <a class="text-link" href="{{ url_for('post_detail', post_id=post.id) }}">繼續閱讀</a>
+                {% if current_user and current_user.id == post.user_id %}
+                <div class="post-actions">
+                    <a class="text-link" href="{{ url_for('edit_post', post_id=post.id) }}">編輯</a>
+                    <form method="post" action="{{ url_for('delete_post', post_id=post.id) }}" onsubmit="return confirm('確定要刪除這篇文章嗎？');">
+                        <button type="submit" class="link-button">刪除</button>
+                    </form>
                 </div>
-            </div>
+                {% endif %}
+            </footer>
         </article>
         {% endfor %}
     </div>
+    {% else %}
+    <div class="empty-state">
+        <h4>還沒有文章。</h4>
+        <p>
+            {% if current_user %}
+            把第一篇旅程故事留給自己吧，點擊右上角的「New Post」開始創作。
+            {% else %}
+            現在登入即可發佈第一篇文章，讓靈感先聲奪人。
+            {% endif %}
+        </p>
+    </div>
+    {% endif %}
 </section>
 
 <section class="newsletter">
     <div class="newsletter-card">
-        <h3 class="newsletter-title">Indulge in the weekly dispatch.</h3>
-        <p class="newsletter-copy">Receive private invites, behind-the-scenes footage, and collector’s edits before anyone else.</p>
+        <h3 class="newsletter-title">訂閱私密旅程情報。</h3>
+        <p class="newsletter-copy">每週一次的私房行程與旅宿邀請，只為挑剔旅人準備。</p>
         <form class="newsletter-form">
-            <input type="email" name="email" placeholder="Your couture inbox" required>
-            <button type="submit" class="btn btn-primary">Request Access</button>
+            <input type="email" name="email" placeholder="輸入您的精品信箱" required>
+            <button type="submit" class="btn btn-primary">加入名單</button>
         </form>
-        <p class="newsletter-footnote">We respect your time. Only the essentials, delivered luxuriously.</p>
+        <p class="newsletter-footnote">我們不打擾，僅分享值得被收藏的旅程。</p>
     </div>
 </section>
 {% endblock content %}

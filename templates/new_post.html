@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}撰寫新文章 · Luxe Voyages{% endblock title %}
+
+{% block content %}
+<section class="form-section">
+    <div class="form-card">
+        <h2 class="form-title">發佈旅程故事</h2>
+        <p class="form-subtitle">以文字與靈感，紀錄你專屬的奢華體驗。</p>
+        <form method="post" class="form">
+            <label class="form-label" for="title">標題</label>
+            <input class="form-input" type="text" id="title" name="title" placeholder="例：聖托里尼的金色時分" value="{{ request.form.get('title', '') }}" required>
+
+            <label class="form-label" for="body">內文</label>
+            <textarea class="form-textarea" id="body" name="body" rows="8" placeholder="描述這趟旅程的光景、聲音與味道…" required>{{ request.form.get('body', '') }}</textarea>
+
+            <button class="btn btn-primary form-submit" type="submit">發佈文章</button>
+        </form>
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}編輯文章 · Luxe Voyages{% endblock title %}
+
+{% block content %}
+<section class="form-section">
+    <div class="form-card">
+        <h2 class="form-title">編輯旅程故事</h2>
+        <p class="form-subtitle">微調文字的氛圍，讓靈感更貼近完美。</p>
+        <form method="post" class="form">
+            <label class="form-label" for="title">標題</label>
+            <input class="form-input" type="text" id="title" name="title" value="{{ request.form.get('title') or post.title }}" required>
+
+            <label class="form-label" for="body">內文</label>
+            <textarea class="form-textarea" id="body" name="body" rows="8" required>{{ request.form.get('body') or post.body }}</textarea>
+
+            <div class="form-actions">
+                <a class="btn btn-ghost" href="{{ url_for('post_detail', post_id=post.id) }}">取消</a>
+                <button class="btn btn-primary form-submit" type="submit">更新文章</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock content %}

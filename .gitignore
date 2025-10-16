@@ -1,2 +1,4 @@
 venv/
 blog/
+instance/
+__pycache__/
